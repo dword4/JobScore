@@ -1,0 +1,28 @@
+.keyword-highlight {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  padding: 1px 3px !important;
+  border-radius: 3px !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3) !important;
+  position: relative !important;
+  z-index: 1000 !important;
+  display: inline !important;
+  text-decoration: none !important;
+  border: 1px solid #e6e600 !important;
+}
+
+/* Ensure highlighting works in various contexts */
+.keyword-highlight * {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+/* Handle dark themes */
+@media (prefers-color-scheme: dark) {
+  .keyword-highlight {
+    background-color: #ffff80 !important;
+    color: #000000 !important;
+    border: 1px solid #ffff00 !important;
+  }
+}

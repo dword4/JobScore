@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Job Keyword Score",
+  "version": "1.0",
+  "description": "Highlight and score jobs based on a list of defined keywords",
+  
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "css": ["highlight.css"]
+  }],
+  
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Keyword Highlighter"
+  }
+}

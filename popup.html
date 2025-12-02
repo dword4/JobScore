@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+    }
+    
+    .score-display {
+      background: #f0f8ff;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      text-align: center;
+      border: 2px solid #4CAF50;
+    }
+    
+    .score-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin: 10px 0;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin: 5px 0;
+    }
+    
+    button:hover {
+      background: #45a049;
+    }
+    
+    .keyword-list {
+      margin-top: 10px;
+      font-size: 12px;
+    }
+    
+    .keyword-tag {
+      display: inline-block;
+      background: #e7e7e7;
+      padding: 2px 6px;
+      margin: 2px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="score-display">
+    <div>Page Score</div>
+    <div class="score-number" id="scoreDisplay">0</div>
+  </div>
+  
+  <label for="keywords">Keywords (one per line):</label>
+  <textarea id="keywords" placeholder="Enter keywords here...&#10;example: javascript&#10;web development&#10;programming"></textarea>
+  
+  <button id="highlightBtn">Highlight Keywords</button>
+  <button id="clearBtn">Clear Highlights</button>
+  
+  <div class="keyword-list">
+    <strong>Current Keywords:</strong>
+    <div id="keywordTags"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

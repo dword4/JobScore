@@ -3,13 +3,58 @@ const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
 function displayScore(score) {
   const scoreDisplay = document.getElementById('scoreDisplay');
+  const scoreContainer = scoreDisplay?.parentElement;
+  
   if (scoreDisplay) {
     if (typeof score === 'object' && score.hits !== undefined && score.total !== undefined) {
       scoreDisplay.textContent = `${score.hits}/${score.total}`;
+      // Set color based on score ratio (inverted: low score = green, high score = red)
+      const ratio = score.total > 0 ? score.hits / score.total : 0;
+      const color = getScoreColor(ratio);
+      scoreDisplay.style.color = color;
+      
+      // Also update border color of the container
+      if (scoreContainer) {
+        scoreContainer.style.borderColor = color;
+      }
     } else {
       // Fallback for old format
       scoreDisplay.textContent = score.toString();
+      scoreDisplay.style.color = '#4CAF50';
+      if (scoreContainer) {
+        scoreContainer.style.borderColor = '#4CAF50';
+      }
     }
+  }
+}
+
+function getScoreColor(ratio) {
+  // Inverted color scheme: 0% = green, 100% = red
+  // Green (good): rgb(76, 175, 80)
+  // Yellow (medium): rgb(255, 193, 7) 
+  // Red (bad): rgb(244, 67, 54)
+  
+  if (ratio <= 0.3) {
+    // Green to yellow-green (0-30%)
+    const factor = ratio / 0.3;
+    const r = Math.round(76 + (200 - 76) * factor);
+    const g = Math.round(175 + (220 - 175) * factor);
+    const b = Math.round(80 + (60 - 80) * factor);
+    return `rgb(${r}, ${g}, ${b})`;
+  } else if (ratio <= 0.7) {
+    // Yellow-green to orange (30-70%)
+    const factor = (ratio - 0.3) / 0.4;
+    const r = Math.round(200 + (255 - 200) * factor);
+    const g = Math.round(220 + (150 - 220) * factor);
+    const b = Math.round(60 + (7 - 60) * factor);
+    return `rgb(${r}, ${g}, ${b})`;
+  } else {
+    // Orange to red (70-100%)
+    const factor = (ratio - 0.7) / 0.3;
+    const r = Math.round(255 + (244 - 255) * factor);
+    const g = Math.round(150 + (67 - 150) * factor);
+    const b = Math.round(7 + (54 - 7) * factor);
+    return `rgb(${r}, ${g}, ${b})`;
   }
 }
 
@@ -25,11 +70,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const keywordsTextarea = document.getElementById('keywords');
   const highlightBtn = document.getElementById('highlightBtn');
   const clearBtn = document.getElementById('clearBtn');
+  const toggleOverlayBtn = document.getElementById('toggleOverlayBtn');
   const scoreDisplay = document.getElementById('scoreDisplay');
   const keywordTags = document.getElementById('keywordTags');
   
   // Load saved keywords and score
-  browserAPI.storage.local.get(['keywords', 'pageScore']).then(function(result) {
+  browserAPI.storage.local.get(['keywords', 'pageScore', 'overlayVisible']).then(function(result) {
     if (result.keywords) {
       keywordsTextarea.value = result.keywords.join('\n');
       displayKeywordTags(result.keywords);
@@ -37,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (result.pageScore !== undefined) {
       displayScore(result.pageScore);
     }
+    // Update toggle button text based on overlay state
+    updateToggleButtonText(result.overlayVisible !== false);
   });
   
   // Update score from active tab
@@ -83,6 +131,24 @@ document.addEventListener('DOMContentLoaded', function() {
     displayScore({ hits: 0, total: 0 });
     browserAPI.storage.local.set({pageScore: { hits: 0, total: 0 }});
   });
+  
+  toggleOverlayBtn.addEventListener('click', function() {
+    browserAPI.tabs.query({active: true, currentWindow: true}).then(function(tabs) {
+      browserAPI.tabs.sendMessage(tabs[0].id, {
+        action: 'toggleOverlay'
+      }).then(function(response) {
+        if (response && response.visible !== undefined) {
+          updateToggleButtonText(response.visible);
+        }
+      }).catch(function(error) {
+        console.error('Error toggling overlay:', error);
+      });
+    });
+  });
+  
+  function updateToggleButtonText(isVisible) {
+    toggleOverlayBtn.textContent = isVisible ? 'Hide Score Overlay' : 'Show Score Overlay';
+  }
   
   function displayKeywordTags(keywords) {
     keywordTags.innerHTML = '';

@@ -1,6 +1,33 @@
 // Cross-browser compatibility
 const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
+// Debug logging function
+function debug(msg) {
+  const debugLog = document.getElementById('debugLog');
+  const timestamp = new Date().toLocaleTimeString();
+  const logMsg = timestamp + ': ' + msg;
+  
+  if (debugLog) {
+    const line = document.createElement('div');
+    line.className = 'debug-line';
+    line.textContent = logMsg;
+    debugLog.appendChild(line);
+    debugLog.scrollTop = debugLog.scrollHeight;
+  }
+  console.log(logMsg);
+  
+  // Save to storage
+  browserAPI.storage.local.get(['debugLogs'], function(result) {
+    let logs = result.debugLogs || [];
+    logs.push(logMsg);
+    // Keep only last 100 messages
+    if (logs.length > 100) {
+      logs = logs.slice(-100);
+    }
+    browserAPI.storage.local.set({debugLogs: logs});
+  });
+}
+
 function displayScore(score) {
   const scoreDisplay = document.getElementById('scoreDisplay');
   const scoreContainer = scoreDisplay?.parentElement;
@@ -67,12 +94,16 @@ browserAPI.runtime.onMessage.addListener(function(request, sender, sendResponse)
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+  debug('DOMContentLoaded fired');
   const keywordsTextarea = document.getElementById('keywords');
   const highlightBtn = document.getElementById('highlightBtn');
   const clearBtn = document.getElementById('clearBtn');
   const toggleOverlayBtn = document.getElementById('toggleOverlayBtn');
+  const optionsBtn = document.getElementById('optionsBtn');
   const scoreDisplay = document.getElementById('scoreDisplay');
   const keywordTags = document.getElementById('keywordTags');
+  
+  debug('optionsBtn element found: ' + (optionsBtn ? 'yes' : 'no'));
   
   // Load saved keywords and score
   browserAPI.storage.local.get(['keywords', 'pageScore', 'overlayVisible']).then(function(result) {
@@ -145,6 +176,14 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+
+  // Options button - open the options page
+  if (optionsBtn) {
+    optionsBtn.addEventListener('click', function() {
+      debug('Options button clicked');
+      browserAPI.runtime.openOptionsPage();
+    });
+  }
   
   function updateToggleButtonText(isVisible) {
     toggleOverlayBtn.textContent = isVisible ? 'Hide Score Overlay' : 'Show Score Overlay';
@@ -175,3 +214,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+

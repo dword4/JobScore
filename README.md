@@ -1,6 +1,6 @@
-# Job Keyword Score
+# JobScore - Firefox Extension
 
-A Firefox extension that highlights and scores job listings based on your custom keyword list.
+A Firefox extension that highlights and scores job listings based on your custom keyword list to help filter job postings.
 
 ## Features
 
@@ -28,18 +28,20 @@ A Firefox extension that highlights and scores job listings based on your custom
    cd JobScore
    ```
 
-2. **Open Chrome Extension Manager**
-   - Go to `chrome://extensions/` in your Chrome browser
-   - Enable "Developer mode" (toggle in top right corner)
+2. **Open Firefox Add-ons Manager**
+   - Type `about:addons` in Firefox's address bar and press Enter
+   - OR click the menu button (☰) and select "Add-ons and themes"
 
-3. **Load the extension**
-   - Click "Load unpacked"
-   - Navigate to and select the `JobScore` folder
-   - The extension will appear in your extensions list
+3. **Enable debugging**
+   - Click the gear icon (⚙️) in the Add-ons Manager
+   - Select "Debug Add-ons"
+   - OR navigate directly to `about:debugging`
 
-4. **Pin the extension** (optional)
-   - Click the puzzle icon in the top right of Chrome
-   - Click the pin icon next to "Job Keyword Score" to keep it visible
+4. **Load the extension**
+   - Click "This Firefox" in the left sidebar
+   - Click "Load Temporary Add-on..."
+   - Navigate to the `JobScore` folder and select `manifest.json`
+   - The extension will appear in your extensions list and toolbar
 
 ## Usage
 
@@ -83,22 +85,23 @@ Currently no keyboard shortcuts. All features are accessible through the popup a
 - Make sure you've clicked "Highlight Keywords" after entering your keywords
 - Check that the page has loaded completely
 - Some websites may block content injection - the extension works on most job boards
+- If using a temporary add-on, ensure it hasn't expired (reload if needed)
 
 ### Score showing 0/0:
 - Click "Highlight Keywords" first to scan the page
 - The score updates only when you actively highlight
 
-### Can't import a file:
-- Make sure the file is a plain text file (`.txt`)
-- Each keyword should be on its own line
-- The file should contain at least one keyword
+### Extension not working:
+- Temporary add-ons in Firefox are removed when Firefox restarts
+- Reload the temporary add-on from `about:debugging` if needed
+- Check Firefox's Browser Console (Ctrl+Shift+J) for any error messages
 
 ## Technical Details
 
 - **Manifest Version**: 2
 - **Permissions**: activeTab, storage, downloads
-- **Storage**: Uses Chrome's local storage API (per-user, per-device)
-- **Compatibility**: Chrome 51+
+- **Storage**: Uses Firefox's local storage API (per-user, per-device)
+- **Compatibility**: Firefox 48+ (WebExtensions API)
 
 ## File Structure
 

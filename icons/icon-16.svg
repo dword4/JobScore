@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- Simplified tiny icon:
+       - small page block with two highlight bars
+       - tiny magnifier handle
+       - tiny green dot for score indicator
+  -->
+  <rect x="0.5" y="0.5" width="11" height="13" rx="1" fill="#f8fafc" stroke="#d1d5db" stroke-width="0.5"/>
+  <rect x="2" y="3" width="7" height="1.2" rx="0.6" fill="#fff29a"/>
+  <rect x="2" y="6" width="7" height="1.2" rx="0.6" fill="#e6edf3"/>
+  <circle cx="12.5" cy="3.5" r="1.5" fill="#16a34a"/>
+  <path d="M9.5 10.5 L12 13" stroke="#475569" stroke-width="0.9" stroke-linecap="round"/>
+</svg>

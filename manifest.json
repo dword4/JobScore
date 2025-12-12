@@ -12,10 +12,7 @@
  
   "browser_specific_settings": {
     "gecko": {
-      "id": "@jobscore-data-collection-with-fallback",
-      "data_collection_permissions": {
-        "required": ["websiteContent"]
-      }
+      "id": "@jobscore-data-collection-with-fallback"
     }
   },
   
@@ -25,10 +22,11 @@
   },
  
   "icons": {
-    "16": "icons/icon-16.svg",
-    "48": "icons/icon-48.svg",
-    "128": "icons/jobscore-icon.svg"
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/jobscore-icon.png"
   },
+  
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "js": ["content.js"],
@@ -41,7 +39,6 @@
   },
   
   "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
+    "page": "options.html"
   }
 }

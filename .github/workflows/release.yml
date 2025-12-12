@@ -30,7 +30,6 @@ jobs:
           # Create zip with files directly in root, not wrapped in JobScore directory
           zip -r "${ZIP}" . --exclude ".git/*" --exclude "node_modules/*" --exclude ".github/*" --exclude "*.zip"
           ls -lh "${ZIP}"
-        working-directory: ${{ github.workspace }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

@@ -1,0 +1,14 @@
+name: Runs all the time on every push
+
+on:
+  push:
+
+jobs:
+  check_things:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: List Files
+        run: ls -la

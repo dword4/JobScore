@@ -25,3 +25,9 @@ jobs:
 
       - name: Show contents of zip file
         run: unzip -l jobscore-extension-${GITHUB_REF##*/}.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jobscore-extension-${{ github.ref_name }}
+          path: jobscore-extension-${{ github.ref_name }}.zip

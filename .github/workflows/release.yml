@@ -28,7 +28,7 @@ jobs:
         run: |
           ZIP=jobscore-extension-${GITHUB_REF##*/}.zip
           # Create zip with files directly in root, not wrapped in JobScore directory
-          zip -r "${ZIP}" * -x ".git/*" "node_modules/*" ".github/*" "*.zip"
+          zip -r "${ZIP}" . --exclude ".git/*" --exclude "node_modules/*" --exclude ".github/*" --exclude "*.zip"
           ls -lh "${ZIP}"
         working-directory: ${{ github.workspace }}
 

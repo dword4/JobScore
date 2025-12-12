@@ -12,3 +12,16 @@ jobs:
 
       - name: List Files
         run: ls -la
+
+      - name: Create zip artifact of extension
+        run: |
+          ZIP=jobscore-extension-${GITHUB_REF##*/}.zip
+          # Create zip with files directly in root, not wrapped in JobScore directory
+          zip -r "${ZIP}" . --exclude ".git/*" --exclude "node_modules/*" --exclude ".github/*" --exclude "*.zip"
+          ls -lh "${ZIP}"
+
+      - name: Show files again
+        run: ls -la
+
+      - name: Show contents of zip file
+        run: unzip -l jobscore-extension-${GITHUB_REF##*/}.zip

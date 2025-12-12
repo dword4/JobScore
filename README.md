@@ -1,6 +1,6 @@
 # Job Keyword Score
 
-A Chrome extension that highlights and scores job listings based on your custom keyword list.
+A Firefox extension that highlights and scores job listings based on your custom keyword list.
 
 ## Features
 

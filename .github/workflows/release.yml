@@ -27,8 +27,8 @@ jobs:
       - name: Create zip artifact of extension
         run: |
           ZIP=jobscore-extension-${GITHUB_REF##*/}.zip
-          # Adjust paths if your extension files are in a subdir
-          zip -r "${ZIP}" . -x ".git/*" "node_modules/*" ".github/*"
+          # Create zip with files directly in root, not wrapped in JobScore directory
+          zip -r "${ZIP}" * -x ".git/*" "node_modules/*" ".github/*" "*.zip"
           ls -lh "${ZIP}"
         working-directory: ${{ github.workspace }}
 

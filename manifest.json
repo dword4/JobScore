@@ -14,11 +14,7 @@
     "gecko": {
       "id": "@jobscore-data-collection-with-fallback",
       "data_collection_permissions": {
-        "required": [
-          "activeTab",
-          "storage",
-          "downloads"
-        ]
+        "required": ["websiteContent"]
       }
     }
   },

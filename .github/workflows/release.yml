@@ -1,0 +1,50 @@
+name: Release extension on tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node (optional, if you build assets)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies (if you use npm build)
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            npm run build --if-present
+          fi
+
+      - name: Create zip artifact of extension
+        run: |
+          ZIP=jobscore-extension-${GITHUB_REF##*/}.zip
+          # Adjust paths if your extension files are in a subdir
+          zip -r "${ZIP}" . -x ".git/*" "node_modules/*" ".github/*"
+          ls -lh "${ZIP}"
+        working-directory: ${{ github.workspace }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jobscore-extension-${{ github.ref_name }}
+          path: jobscore-extension-${{ github.ref_name }}.zip
+
+      # Optional: publish to Chrome Web Store (requires setup of secrets and a service account)
+      # - name: Publish to Chrome Web Store
+      #   run: |
+      #     npm i -g chrome-webstore-upload-cli
+      #     # prepare upload params and use secrets: CHROME_WEBSTORE_CLIENT_ID, CHROME_WEBSTORE_CLIENT_SECRET, CHROME_WEBSTORE_REFRESH_TOKEN
+      #     chrome-webstore upload --source jobscore-extension-${{ github.ref_name }}.zip --extension-id ${{ secrets.CHROME_EXTENSION_ID }} --auto-publish
+      #   env:
+      #     CHROME_WEBSTORE_CLIENT_ID: ${{ secrets.CHROME_WEBSTORE_CLIENT_ID }}
+      #     CHROME_WEBSTORE_CLIENT_SECRET: ${{ secrets.CHROME_WEBSTORE_CLIENT_SECRET }}
+# Note: The chrome-webstore upload step requires creating a Google Cloud service account or using OAuth credentials and storing them as repo secrets.
